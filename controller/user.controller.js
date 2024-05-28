@@ -38,7 +38,20 @@ userController.loginWithEmail = async (req, res)=>{
     }
     throw new Error("아이디 또는 비밀번호가 일치하지 않습니다.")
   } catch (error) {
-    return res.status(400).json({status:"fail", error : error.message});
+    return res.status(400).json({status:"fail", message : error.message});
+  }
+}
+
+userController.getUser = async (req, res) => {
+  try {
+    const userId = req.userId
+    const user = await User.findById(userId);
+    if (!user){
+      throw new Error("can not find user")
+    }
+    res.status(200).json({status : "success", user})
+  } catch(error){
+    res.status(400).json({status : "fail", message : error.message})
   }
 }
 
